@@ -22,7 +22,7 @@ CREATE TABLE departments
 CREATE TABLE positions
 (
 	position_id		TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    position_name 	ENUM("Dev","Test","Scrum Master","PM") DEFAULT "Dev"
+    position_name 	ENUM("Dev","Test","Serum Master","PM") DEFAULT "Dev"
 );
 
 CREATE TABLE accounts
