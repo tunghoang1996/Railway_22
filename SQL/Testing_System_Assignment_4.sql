@@ -1,14 +1,16 @@
 -- Question 1: Viết lệnh để lấy ra danh sách nhân viên và thông tin phòng ban của họ
-SELECT d.department_name,
+SELECT IFNULL(d.department_name, 'Khong co phong ban') department_name,
  		a.fullname
  FROM departments d
- INNER JOIN accounts a
- ON d.department_id = a.department_id;
+ RIGHT JOIN accounts a
+ ON d.department_id = a.department_id
+ ;
 
  -- Question 2: Viết lệnh để lấy ra thông tin các account được tạo sau ngày 20/12/2010
 SELECT *
 FROM `accounts`
-WHERE create_date < '2020-12-20';
+WHERE create_date < '2020-12-20'
+;
 
 -- Question 3: Viết lệnh để lấy ra tất cả các developer
 SELECT *
@@ -16,11 +18,10 @@ FROM accounts a
 LEFT JOIN positions p
 ON a.position_id = p.position_id
 WHERE p.position_name = 'Dev';
--- GROUP BY p.position_name;
 
 -- Question 4: Viết lệnh để lấy ra danh sách các phòng ban có >3 nhân viên
 SELECT d.department_id,
-		d.department_name
+	d.department_name
 FROM departments d
 LEFT JOIN accounts a
 ON d.department_id = a.department_id
@@ -63,15 +64,15 @@ INNER JOIN answers a
 ON q.question_id = a.question_id
 GROUP BY a.question_id
 HAVING COUNT(a.question_id) = (SELECT COUNT(question_id)
-								FROM answers
-								GROUP BY question_id
-								ORDER BY question_id
-								LIMIT 1);
+FROM answers
+GROUP BY question_id
+ORDER BY question_id
+LIMIT 1);
 
 -- Question 9: Thống kê số lượng account trong mỗi group
 SELECT acc.account_id,
-		acc.username,
-        COUNT(gacc.account_id) amount,
+	acc.username,
+    COUNT(gacc.account_id) amount,
         gacc.group_id 
 FROM accounts acc
 RIGHT JOIN group_accounts gacc
@@ -80,18 +81,18 @@ GROUP BY gacc.account_id;
 
 -- Question 10. Tìm chức vụ có ít người nhất  
 SELECT	p.position_name,
-		COUNT(p.position_id) so_nhan_vien
+	COUNT(p.position_id) so_nhan_vien
 FROM	positions p
 RIGHT JOIN	accounts a
 ON	p.position_id = a.position_id
 GROUP BY	a.position_id
 HAVING	COUNT(p.position_id) = (SELECT COUNT(position_id)
-								FROM accounts
-								GROUP BY position_id
-								ORDER BY COUNT(position_id)
-								LIMIT 1);
+	FROM accounts
+	GROUP BY position_id
+	ORDER BY COUNT(position_id)
+	LIMIT 1);
                                 
-                                -- Question 11: Thống kê mỗi phòng ban có bao nhiêu dev, test, scrum master, PM
+-- Question 11: Thống kê mỗi phòng ban có bao nhiêu dev, test, scrum master, PM
 
 SELECT		d.department_id, d.department_name, p.position_name, COUNT(p.position_id)
 FROM		departments d
@@ -105,10 +106,10 @@ GROUP BY	d.department_id, p.position_id;
 
 SELECT		q.question_id, tq.type_name, cq.category_name, q.content, q.type_id, q.creator_id, a.full_name, an.answer_id, an.content
 FROM		answers an 
-INNER JOIN	questions q			ON q.question_id=an.question_id
+INNER JOIN	questions q		ON q.question_id=an.question_id
 INNER JOIN	`accounts` a		ON a.account_id=q.creator_id
 INNER JOIN	type_questions tq	ON tq.type_id=q.type_id
-INNER JOIN	category_questions cq ON cq.category_id=q.category_id;
+INNER JOIN	category_questions cq  ON cq.category_id=q.category_id;
 
 -- Question 13. Lấy ra số lượng câu hỏi của mỗi loại tự luận hay trắc nghiệm 
 SELECT	tn.type_name,	
