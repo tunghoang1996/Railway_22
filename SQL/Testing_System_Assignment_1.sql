@@ -47,7 +47,7 @@ CREATE TABLE `groups`
 	create_date DATE,
     FOREIGN KEY(creator_id) REFERENCES accounts(account_id)
 );
-
+ 
 CREATE TABLE group_accounts
 (
 	group_id		TINYINT UNSIGNED,
